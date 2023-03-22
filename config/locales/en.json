@@ -1,0 +1,16 @@
+{
+  "user.auth.creds.required": "Email and/or password is required",
+  "user.auth.creds.invalid": "Given credentials are invalid",
+  "user.auth.logout.nouser": "There is no user to logout",
+  "author.required.input": "Author name is required",
+  "author.required.id": "Author id is required",
+  "book.required.id": "Book id is required",
+  "category.required.input": "Category name is required",
+  "category.required.id": "Category ID is required",
+  "history.required.input": "Book and issuedTo required",
+  "book.unavailable": "Book is not available",
+  "user.auth.email.exists": "The user with this email already exists",
+  "user.auth.username.exists": "The username is already taken, kindly choose another one",
+  "user.auth.register.success": "The user has been registered successfully",
+  "user.auth.register.failure": "The user could not be registered due to some internal errors"
+}
