@@ -4,7 +4,7 @@
   "user.auth.logout.nouser": "There is no user to logout",
   "author.required.input": "Author name is required",
   "author.required.id": "Author id is required",
-  "book.required.id": "Book id is required",
+  "book.required.input": "Author and category name is required",
   "category.required.input": "Category name is required",
   "category.required.id": "Category ID is required",
   "history.required.input": "Book and issuedTo required",

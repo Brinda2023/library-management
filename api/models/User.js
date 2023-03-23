@@ -39,6 +39,10 @@ module.exports = {
       type: "boolean",
       defaultsTo: true,
     },
+    history:{
+      collection: "history",
+      via: "issuedTo",
+    },
   },
   validateBeforeRegister: (data) => {
     const { Validator, ValidationRules } = sails.config.constants;

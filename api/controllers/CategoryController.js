@@ -26,7 +26,6 @@ module.exports = {
         id: sails.config.constants.uuid(),
         name,
       }).fetch();
-      console.log(category);
 
       return res.ok(category);
     } catch (error) {
@@ -66,7 +65,7 @@ module.exports = {
         return res.notFound();
       }
 
-      return res.ok({updatedCategory});
+      return res.ok({ updatedCategory });
     } catch (error) {
       sails.log.error(error);
       return res.serverError(error);
@@ -120,9 +119,9 @@ module.exports = {
       let categories;
       if (name) {
         categories = await Category.find({
+          where: { name: { contains: name } },
           limit: limit,
           skip: skipIndex,
-          name,
         }).populate("books");
       } else {
         categories = await Category.find({
@@ -131,7 +130,7 @@ module.exports = {
         }).populate("books");
       }
 
-      return res.ok({ categories });
+      return res.ok(categories);
     } catch (error) {
       sails.log.error(error);
       return res.serverError(error);

@@ -119,9 +119,9 @@ module.exports = {
       let authors;
       if (name) {
         authors = await Author.find({
+          where: { name: { contains: name } },
           limit: limit,
           skip: skipIndex,
-          name,
         }).populate("books");
       } else {
         authors = await Author.find({
@@ -129,7 +129,7 @@ module.exports = {
           skip: skipIndex,
         }).populate("books");
       }
-      return res.ok({ authors });
+      return res.ok(authors);
     } catch (error) {
       sails.log.error(error);
       return res.serverError(error);

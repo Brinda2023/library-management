@@ -5,6 +5,17 @@
  * @help        :: See https://sailsjs.com/docs/concepts/actions
  */
 
+const nodemailer = require("nodemailer");
+
+var transport = nodemailer.createTransport({
+  host: "sandbox.smtp.mailtrap.io",
+  port: 2525,
+  auth: {
+    user: "8c383be5343b1f",
+    pass: "e909f182022f7a",
+  },
+});
+
 module.exports = {
   /**
    * @name register
@@ -56,7 +67,25 @@ module.exports = {
         email,
         password: hashedPassword,
       });
-      // Check if email verification is required then send the verification code/link to email
+      //Send registration mail to user
+      let mailDetails = {
+        from: "sender@gmail.com",
+        to: "receiver@gmail.com",
+        subject: "Registration successful",
+        text:
+          "Dear " +
+          firstName +
+          " " +
+          lastName +
+          " You're registered successfully ",
+      };
+      transport.sendMail(mailDetails, (err, data) => {
+        if (err) {
+          console.log("Error Occurs");
+        } else {
+          console.log("Email sent successfully");
+        }
+      });
       // Return Response
       return res.ok("User registered successfully!");
     } catch (error) {

@@ -31,9 +31,8 @@ module.exports.routes = {
   "POST /history": "HistoryController.create",
   "PATCH /history/:id": "HistoryController.update",
   "GET /history/:id": "HistoryController.get",
-  
+
   "POST /user/register": "UserController.register",
   "POST /user/login": "UserController.login",
   "GET /user/logout": "UserController.logout",
-
 };

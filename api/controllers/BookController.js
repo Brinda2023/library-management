@@ -16,22 +16,19 @@ module.exports = {
     try {
       // get the book data from body
       const { name, author, price, category, publishYear } = req.body;
-      const { thumb } = req.file;
-      console.log(req.file);
 
       // validate data
       const validate = Book.validateBeforeCreate({
         name,
         price,
         publishYear,
-        thumb,
       });
       // sails.log.info(validate);
       if (validate.hasError) {
         return res.badRequest("", validate.errors);
       }
       if (!author || !category) {
-        return res.badRequest("book.required.id");
+        return res.badRequest("book.required.input");
       }
 
       // check if author exists in the database with given ID
@@ -44,35 +41,39 @@ module.exports = {
       if (category !== existedCategory.name) {
         return res.notFound();
       }
+
       // upload image TODO
-      // req.file(thumb).upload(
-      //   {
-      //     adapter: require("skipper-s3"),
-      //     key: "S3 Key",
-      //     secret: "S3 Secret",
-      //     bucket: "Bucket Name",
-      //   },
-      //   (err, filesUploaded) => {
-      //     if (err) return res.serverError(err);
-      //     return res.ok({
-      //       files: filesUploaded,
-      //       textParams: req.allParams(),
-      //     });
-      //   }
-      // );
 
-      // creating the book in the database
-      const book = await Book.create({
-        id: sails.config.constants.uuid(),
-        name,
-        author: existedAuthor.id,
-        price,
-        category: existedCategory.id,
-        publishYear,
-        thumb,
-      }).fetch();
+      req.file("thumb").upload(
+        {
+          maxBytes: 10000000,
+        },
+        async (err, uploadedFiles) => {
+          if (err) {
+            return res.status(500)({
+              message: sails.__(`pic.serverError`, { lang }),
+              error: err,
+            });
+          } else {
+            if (uploadedFiles.length > 0) {
+              //     console.log(uploadedFiles);
+              thumbFd = await uploadedFiles[0].fd;
 
-      return res.ok({ book });
+              // creating the book in the database
+              const book = await Book.create({
+                id: sails.config.constants.uuid(),
+                name,
+                author: existedAuthor.id,
+                price,
+                category: existedCategory.id,
+                publishYear,
+                thumb: thumbFd,
+              }).fetch();
+              return res.ok(book);
+            }
+          }
+        }
+      );
     } catch (error) {
       sails.log.error(error);
       return res.serverError(error);
@@ -172,33 +173,32 @@ module.exports = {
       const limit = parseInt(req.query.limit) || 20;
       const skipIndex = (page - 1) * limit;
 
-      // const books = await Book.find({
-      //   limit: limit,
-      //   skip: skipIndex,
-      // }).populateAll();
-
-      // get the filter data from qyery
+      // get the filter data from query
       const { book, author, category } = req.query;
       let books;
       if (book) {
         books = await Book.find({
+          where: { name: { contains: book } },
           limit: limit,
           skip: skipIndex,
-          name: book,
         }).populateAll();
       } else if (author) {
-        const existedAuthor = await Author.findOne({ name: author });
+        const existedAuthor = await Author.findOne({
+          name: { contains: author },
+        });
         books = await Book.find({
+          where: { author: existedAuthor.id },
           limit: limit,
           skip: skipIndex,
-          author: existedAuthor.id,
         }).populateAll();
       } else if (category) {
-        const existedCategory = await Category.findOne({ name: category });
+        const existedCategory = await Category.findOne({
+          name: { contains: category },
+        });
         books = await Book.find({
+          where: { category: existedCategory.id },
           limit: limit,
           skip: skipIndex,
-          category: existedCategory.id,
         }).populateAll();
       } else {
         books = await Book.find({
@@ -226,37 +226,38 @@ module.exports = {
       const limit = parseInt(req.query.limit) || 20;
       const skipIndex = (page - 1) * limit;
 
-      // get the filter data from qyery
+      // get the filter data from query
       const { book, author, category } = req.query;
       let books;
       if (book) {
         books = await Book.find({
+          where: { name: { contains: book }, isAvailable: true },
           limit: limit,
           skip: skipIndex,
-          isAvailable: true,
-          name: book,
         }).populateAll();
       } else if (author) {
-        const existedAuthor = await Author.findOne({ name: author });
+        const existedAuthor = await Author.findOne({
+          name: { contains: author },
+        });
         books = await Book.find({
+          where: { isAvailable: true, author: existedAuthor.id },
           limit: limit,
           skip: skipIndex,
-          isAvailable: true,
-          author: existedAuthor.id,
         }).populateAll();
       } else if (category) {
-        const existedCategory = await Category.findOne({ name: category });
+        const existedCategory = await Category.findOne({
+          name: { contains: category },
+        });
         books = await Book.find({
+          where: { isAvailable: true, category: existedCategory.id },
           limit: limit,
           skip: skipIndex,
-          isAvailable: true,
-          category: existedCategory.id,
         }).populateAll();
       } else {
         books = await Book.find({
+          where: { isAvailable: true },
           limit: limit,
           skip: skipIndex,
-          isAvailable: true,
         }).populateAll();
       }
 
