@@ -32,9 +32,8 @@ module.exports = {
       if (!book || !issuedTo) {
         return res.badRequest("history.required.input");
       }
-      // check if book exists in the database with given ID
+      // check if book exists in the database with given name
       let existedBook = await Book.findOne({ name: book });
-      console.log(existedBook);
       if (book !== existedBook.name) {
         return res.notFound();
       }
@@ -47,7 +46,6 @@ module.exports = {
       if (issuedTo !== existedUser.username) {
         return res.notFound();
       }
-      console.log(existedUser);
 
       const currentDate = new Date().toLocaleDateString();
 
@@ -58,7 +56,6 @@ module.exports = {
         issuedTo: existedUser.id,
         issuedAt: currentDate,
       }).fetch();
-      console.log(history);
 
       //Updating book status to unavailable
       await Book.updateOne({
@@ -84,7 +81,7 @@ module.exports = {
         }
       });
 
-      return res.ok({ history });
+      return res.ok(history);
     } catch (error) {
       sails.log.error(error);
       return res.serverError(error);
@@ -145,7 +142,7 @@ module.exports = {
         }
       });
 
-      return res.ok({ updatedHistory });
+      return res.ok(updatedHistory);
     } catch (error) {
       sails.log.error(error);
       return res.serverError(error);
@@ -174,7 +171,6 @@ module.exports = {
 
       // check if book exists in the database with given ID
       let existedBook = await Book.findOne({ id });
-      console.log(existedBook.id);
       if (id !== existedBook.id) {
         return res.notFound();
       }
@@ -185,7 +181,7 @@ module.exports = {
         skip: skipIndex,
       }).populateAll();
 
-      return res.ok({ history });
+      return res.ok(history);
     } catch (error) {
       sails.log.error(error);
       return res.serverError(error);

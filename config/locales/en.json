@@ -12,5 +12,8 @@
   "user.auth.email.exists": "The user with this email already exists",
   "user.auth.username.exists": "The username is already taken, kindly choose another one",
   "user.auth.register.success": "The user has been registered successfully",
-  "user.auth.register.failure": "The user could not be registered due to some internal errors"
+  "user.auth.register.failure": "The user could not be registered due to some internal errors",
+  "author.name.exists": "Author with this name already exists",
+  "book.name.exists": "Book with this name already exists",
+  "category.name.exists": "Category with this name already exists"
 }

@@ -7,11 +7,11 @@ describe("UserController", () => {
     supertest(sails.hooks.http.app)
       .post("/user/register")
       .send({
-        firstName: "user1fn",
-        lastName: "user1ln",
-        email: "user1@gmail.com",
-        password: "user1#PW",
-        username: "user1un",
+        firstName: "user3fn",
+        lastName: "user3ln",
+        email: "user3@gmail.com",
+        password: "user3#PW",
+        username: "user3un",
       })
       .expect(200)
       .end((err, res) => {
@@ -29,8 +29,8 @@ describe("UserController", () => {
     supertest(sails.hooks.http.app)
       .post("/user/login")
       .send({
-        email: "user1@gmail.com",
-        password: "user1#PW",
+        email: "user3@gmail.com",
+        password: "user3#PW",
       })
       .expect(200)
       .end((err, res) => {

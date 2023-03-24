@@ -17,6 +17,11 @@ module.exports = {
       // get the book data from body
       const { name, author, price, category, publishYear } = req.body;
 
+      // Check if the book with given name already exists
+      const existingBookName = await Book.findOne({ name });
+      if (existingBookName) {
+        return res.badRequest("book.name.exists");
+      }
       // validate data
       const validate = Book.validateBeforeCreate({
         name,
@@ -43,6 +48,7 @@ module.exports = {
       }
 
       // upload image TODO
+      // let thumbFd;
 
       req.file("thumb").upload(
         {
@@ -58,7 +64,6 @@ module.exports = {
             if (uploadedFiles.length > 0) {
               //     console.log(uploadedFiles);
               thumbFd = await uploadedFiles[0].fd;
-
               // creating the book in the database
               const book = await Book.create({
                 id: sails.config.constants.uuid(),
@@ -207,7 +212,7 @@ module.exports = {
         }).populateAll();
       }
 
-      return res.ok({ books });
+      return res.ok(books);
     } catch (error) {
       sails.log.error(error);
       return res.serverError(error);
@@ -261,7 +266,7 @@ module.exports = {
         }).populateAll();
       }
 
-      return res.ok({ books });
+      return res.ok(books);
     } catch (error) {
       sails.log.error(error);
       return res.serverError(error);

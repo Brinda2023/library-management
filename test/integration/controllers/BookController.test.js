@@ -17,7 +17,6 @@ describe("BookController", () => {
           return done(err);
         }
         tokenAdmin = res.body.data.token;
-        console.log(res.body);
 
         done();
       });
@@ -38,7 +37,6 @@ describe("BookController", () => {
         if (err) {
           return done(err);
         }
-        console.log(res.body);
 
         done();
       });
@@ -56,24 +54,74 @@ describe("BookController", () => {
         if (err) {
           return done(err);
         }
-        console.log(res.body);
         tokenUser = res.body.data.token;
 
         done();
       });
   });
-
+  //create
+  it("create an author", (done) => {
+    supertest(sails.hooks.http.app)
+      .post("/author")
+      .send({
+        name: "Author1",
+      })
+      .set("Authorization", `Bearer ${tokenAdmin}`)
+      .expect(200)
+      .end((err, res) => {
+        if (err) {
+          return done(err);
+        }
+        done();
+      });
+  });
+  //create
+  it("create a category", (done) => {
+    supertest(sails.hooks.http.app)
+      .post("/category")
+      .send({
+        name: "Category1",
+      })
+      .set("Authorization", `Bearer ${tokenAdmin}`)
+      .expect(200)
+      .end((err, res) => {
+        if (err) {
+          return done(err);
+        }
+        done();
+      });
+  });
+  let bookID;
   //create
   it("create a book", (done) => {
     supertest(sails.hooks.http.app)
       .post("/book")
-      .send({
-        name: "book4",
-        author: "author1",
-        price: "111",
-        category: "Classic",
-        publishYear: "2001",
-      })
+      .field("name", "book4")
+      .field("author", "Author1")
+      .field("price", "111")
+      .field("category", "Category1")
+      .field("publishYear", "2001")
+      .attach(
+        "thumb",
+        "/Users/ztlab140/Documents/sails/library-management/.tmp/uploads/f83f4c2a-aaf0-4c73-837f-8c78bc12b8dc.png"
+      )
+      .set("Authorization", `Bearer ${tokenAdmin}`)
+      .expect(200)
+      .end((err, res) => {
+        if (err) {
+          return done(err);
+        }
+
+        console.log(res.body);
+        bookID = res.body.data.id;
+
+        done();
+      });
+  });
+  //get
+  it("get all the books", (done) => {
+    supertest(sails.hooks.http.app)
+      .get("/book")
       .set("Authorization", `Bearer ${tokenAdmin}`)
       .expect(200)
       .end((err, res) => {
@@ -86,69 +134,53 @@ describe("BookController", () => {
         done();
       });
   });
-  // //find
-  // it("only registered user can find all the places from database", (done) => {
-  //   supertest(sails.hooks.http.app)
-  //     .get("/place")
-  //     .set("Authorization", `Bearer ${tokenUser}`)
-  //     .expect(200)
-  //     .end((err, res) => {
-  //       if (err) {
-  //         return done(err);
-  //       }
+  //getU
+  it("get all the books", (done) => {
+    supertest(sails.hooks.http.app)
+      .get("/book/user")
+      .set("Authorization", `Bearer ${tokenUser}`)
+      .expect(200)
+      .end((err, res) => {
+        if (err) {
+          return done(err);
+        }
 
-  //       console.log(res.body);
+        console.log(res.body);
 
-  //       done();
-  //     });
-  // });
-  // //findOne
-  // it("only admin can find place by its id", (done) => {
-  //   supertest(sails.hooks.http.app)
-  //     .get("/place/6412bd8ddd15fe55ffffb1c5")
-  //     .set("Authorization", `Bearer ${tokenAdmin}`)
-  //     .expect(200)
-  //     .end((err, res) => {
-  //       if (err) {
-  //         return done(err);
-  //       }
+        done();
+      });
+  });
+  //update
+  it("update a book", (done) => {
+    supertest(sails.hooks.http.app)
+      .patch("/book/" + bookID)
+      .field("name", "book44")
+      .set("Authorization", `Bearer ${tokenAdmin}`)
+      .expect(200)
+      .end((err, res) => {
+        if (err) {
+          return done(err);
+        }
 
-  //       console.log(res.body);
+        console.log(res.body);
 
-  //       done();
-  //     });
-  // });
-  // //update
-  // it("only admin can update a place", (done) => {
-  //   supertest(sails.hooks.http.app)
-  //     .patch("/place/6412bd8ddd15fe55ffffb1c5")
-  //     .field("name", "Kitak")
-  //     .set("Authorization", `Bearer ${tokenAdmin}`)
-  //     .expect(200)
-  //     .end((err, res) => {
-  //       if (err) {
-  //         return done(err);
-  //       }
+        done();
+      });
+  });
+  //delete
+  it("delete a book", (done) => {
+    supertest(sails.hooks.http.app)
+      .delete("/book/" + bookID)
+      .set("Authorization", `Bearer ${tokenAdmin}`)
+      .expect(200)
+      .end((err, res) => {
+        if (err) {
+          return done(err);
+        }
 
-  //       console.log(res.body);
+        console.log(res.body);
 
-  //       done();
-  //     });
-  // });
-  // //delete
-  // it("only admin can delete a place", (done) => {
-  //   supertest(sails.hooks.http.app)
-  //     .delete("/place/6412bd8ddd15fe55ffffb1c5")
-  //     .set("Authorization", `Bearer ${tokenAdmin}`)
-  //     .expect(200)
-  //     .end((err, res) => {
-  //       if (err) {
-  //         return done(err);
-  //       }
-
-  //       console.log(res.body);
-
-  //       done();
-  //     });
-  // });
+        done();
+      });
+  });
 });

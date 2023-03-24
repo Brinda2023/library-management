@@ -20,6 +20,11 @@ module.exports = {
       if (!name) {
         return res.badRequest("category.required.input");
       }
+      // Check if the category with given name already exists
+      const existingCategoryName = await Category.findOne({ name });
+      if (existingCategoryName) {
+        return res.badRequest("category.name.exists");
+      }
 
       // creating the category in the database
       const category = await Category.create({
@@ -27,7 +32,7 @@ module.exports = {
         name,
       }).fetch();
 
-      return res.ok(category);
+      return res.ok({category});
     } catch (error) {
       sails.log.error(error);
       return res.serverError(error);

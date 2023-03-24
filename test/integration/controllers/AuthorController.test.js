@@ -15,7 +15,6 @@ describe("AuthorController", () => {
         if (err) {
           return done(err);
         }
-        console.log(res.body);
         tokenAdmin = res.body.data.token;
 
         done();

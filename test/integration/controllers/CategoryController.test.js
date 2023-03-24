@@ -15,7 +15,6 @@ describe("CategoryController", () => {
         if (err) {
           return done(err);
         }
-        console.log(res.body);
         tokenAdmin = res.body.data.token;
 
         done();
@@ -28,7 +27,7 @@ describe("CategoryController", () => {
     supertest(sails.hooks.http.app)
       .post("/category")
       .send({
-        name: "Category1",
+        name: "Category2",
       })
       .set("Authorization", `Bearer ${tokenAdmin}`)
       .expect(200)
@@ -38,7 +37,7 @@ describe("CategoryController", () => {
         }
 
         console.log(res.body);
-        categoryID = res.body.data.id;
+        categoryID = res.body.data.category.id;
 
         done();
       });
@@ -63,7 +62,7 @@ describe("CategoryController", () => {
   it("update a category", (done) => {
     supertest(sails.hooks.http.app)
       .patch("/category/" + categoryID)
-      .field("name", "Category12")
+      .field("name", "Category22")
       .set("Authorization", `Bearer ${tokenAdmin}`)
       .expect(200)
       .end((err, res) => {

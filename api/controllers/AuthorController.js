@@ -20,6 +20,11 @@ module.exports = {
       if (!name) {
         return res.badRequest("author.required.input");
       }
+      // Check if the author with given name already exists
+      const existingAuthorName = await Author.findOne({ name });
+      if (existingAuthorName) {
+        return res.badRequest("author.name.exists");
+      }
 
       // creating the author in the database
       const author = await Author.create({
