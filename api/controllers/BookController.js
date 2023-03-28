@@ -206,16 +206,15 @@ module.exports = {
       }
 
       // Make a search query
-      let searchQuery = {
-        or: [
-          author ? { author: { in: authorId } } : {},
-          category ? { category: { in: categoryId } } : {},
-        ],
-      };
-
-      // Query to search a book by name
+      let searchQuery = {};
+      if (authorId.length) {
+        searchQuery.author = { in: authorId };
+      }
+      if (categoryId.length) {
+        searchQuery.category = { in: categoryId };
+      }
       if (book) {
-        searchQuery.or.push({ name: { contains: book } });
+        searchQuery.name = { contains: book };
       }
 
       // For user get only available books

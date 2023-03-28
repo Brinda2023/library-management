@@ -1,15 +1,15 @@
-var supertest = require("supertest");
+var supertest = require('supertest');
 var tokenAdmin;
 var tokenUser;
 
-describe("BookController", () => {
+describe('BookController', () => {
   //login
-  it("admin login", (done) => {
+  it('admin login', (done) => {
     supertest(sails.hooks.http.app)
-      .post("/admin/login")
+      .post('/admin/login')
       .send({
-        email: "admin@zignuts.com",
-        password: "VeryStrong@Pwd9812",
+        email: 'admin@zignuts.com',
+        password: 'VeryStrong@Pwd9812',
       })
       .expect(200)
       .end((err, res) => {
@@ -22,15 +22,15 @@ describe("BookController", () => {
       });
   });
   // register
-  it("register a user", (done) => {
+  it('register a user', (done) => {
     supertest(sails.hooks.http.app)
-      .post("/user/register")
+      .post('/user/register')
       .send({
-        firstName: "user1fn",
-        lastName: "user1ln",
-        email: "user1@gmail.com",
-        password: "user1#PW",
-        username: "user1un",
+        firstName: 'user1fn',
+        lastName: 'user1ln',
+        email: 'user1@gmail.com',
+        password: 'user1#PW',
+        username: 'user1un',
       })
       .expect(200)
       .end((err, res) => {
@@ -42,12 +42,12 @@ describe("BookController", () => {
       });
   });
   // login
-  it("login a user", (done) => {
+  it('login a user', (done) => {
     supertest(sails.hooks.http.app)
-      .post("/user/login")
+      .post('/user/login')
       .send({
-        email: "user1@gmail.com",
-        password: "user1#PW",
+        email: 'user1@gmail.com',
+        password: 'user1#PW',
       })
       .expect(200)
       .end((err, res) => {
@@ -60,13 +60,13 @@ describe("BookController", () => {
       });
   });
   //create
-  it("create an author", (done) => {
+  it('create an author', (done) => {
     supertest(sails.hooks.http.app)
-      .post("/author")
+      .post('/author')
       .send({
-        name: "Author1",
+        name: 'Author1',
       })
-      .set("Authorization", `Bearer ${tokenAdmin}`)
+      .set('Authorization', `Bearer ${tokenAdmin}`)
       .expect(200)
       .end((err, res) => {
         if (err) {
@@ -76,13 +76,13 @@ describe("BookController", () => {
       });
   });
   //create
-  it("create a category", (done) => {
+  it('create a category', (done) => {
     supertest(sails.hooks.http.app)
-      .post("/category")
+      .post('/category')
       .send({
-        name: "Category1",
+        name: 'Category1',
       })
-      .set("Authorization", `Bearer ${tokenAdmin}`)
+      .set('Authorization', `Bearer ${tokenAdmin}`)
       .expect(200)
       .end((err, res) => {
         if (err) {
@@ -93,19 +93,19 @@ describe("BookController", () => {
   });
   let bookID;
   //create
-  it("create a book", (done) => {
+  it('create a book', (done) => {
     supertest(sails.hooks.http.app)
-      .post("/book")
-      .field("name", "book4")
-      .field("author", "Author1")
-      .field("price", "111")
-      .field("category", "Category1")
-      .field("publishYear", "2001")
+      .post('/book')
+      .field('name', 'book4')
+      .field('author', 'Author1')
+      .field('price', '111')
+      .field('category', 'Category1')
+      .field('publishYear', '2001')
       .attach(
-        "thumb",
-        "/Users/ztlab140/Documents/sails/library-management/.tmp/uploads/f83f4c2a-aaf0-4c73-837f-8c78bc12b8dc.png"
+        'thumb',
+        '/Users/ztlab140/Documents/sails/library-management/.tmp/uploads/f83f4c2a-aaf0-4c73-837f-8c78bc12b8dc.png'
       )
-      .set("Authorization", `Bearer ${tokenAdmin}`)
+      .set('Authorization', `Bearer ${tokenAdmin}`)
       .expect(200)
       .end((err, res) => {
         if (err) {
@@ -119,10 +119,11 @@ describe("BookController", () => {
       });
   });
   //get
-  it("get all the books", (done) => {
+  it('get all the books', (done) => {
     supertest(sails.hooks.http.app)
-      .get("/book")
-      .set("Authorization", `Bearer ${tokenAdmin}`)
+      .get(`/book`)
+      .query({'author':'Auth'})
+      .set('Authorization', `Bearer ${tokenAdmin}`)
       .expect(200)
       .end((err, res) => {
         if (err) {
@@ -135,10 +136,10 @@ describe("BookController", () => {
       });
   });
   //get
-  it("get all the books", (done) => {
+  it('get all the books', (done) => {
     supertest(sails.hooks.http.app)
-      .get("/book/user")
-      .set("Authorization", `Bearer ${tokenUser}`)
+      .get('/book/user')
+      .set('Authorization', `Bearer ${tokenUser}`)
       .expect(200)
       .end((err, res) => {
         if (err) {
@@ -151,11 +152,11 @@ describe("BookController", () => {
       });
   });
   //update
-  it("update a book", (done) => {
+  it('update a book', (done) => {
     supertest(sails.hooks.http.app)
-      .patch("/book/" + bookID)
-      .field("name", "book44")
-      .set("Authorization", `Bearer ${tokenAdmin}`)
+      .patch('/book/' + bookID)
+      .field('name', 'book44')
+      .set('Authorization', `Bearer ${tokenAdmin}`)
       .expect(200)
       .end((err, res) => {
         if (err) {
@@ -168,10 +169,10 @@ describe("BookController", () => {
       });
   });
   //delete
-  it("delete a book", (done) => {
+  it('delete a book', (done) => {
     supertest(sails.hooks.http.app)
-      .delete("/book/" + bookID)
-      .set("Authorization", `Bearer ${tokenAdmin}`)
+      .delete('/book/' + bookID)
+      .set('Authorization', `Bearer ${tokenAdmin}`)
       .expect(200)
       .end((err, res) => {
         if (err) {
