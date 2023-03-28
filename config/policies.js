@@ -27,8 +27,7 @@ module.exports.policies = {
     "create": ["isLoggedIn", "isAdmin"],
     "update": ["isLoggedIn", "isAdmin"],
     "delete": ["isLoggedIn", "isAdmin"],
-    "get": ["isLoggedIn", "isAdmin"],
-    "getU": ["isLoggedIn", "isUser"],
+    "get": "isLoggedIn",
 
   },
   CategoryController: {

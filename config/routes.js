@@ -26,7 +26,7 @@ module.exports.routes = {
   "GET /book": "BookController.get",
   "PATCH /book/:id": "BookController.update",
   "DELETE /book/:id": "BookController.delete",
-  "GET /book/user": "BookController.getU",
+  "GET /book/user": "BookController.get",
 
   "POST /history": "HistoryController.create",
   "PATCH /history/:id": "HistoryController.update",

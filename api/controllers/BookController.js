@@ -180,91 +180,55 @@ module.exports = {
 
       // get the filter data from query
       const { book, author, category } = req.query;
-      let books;
-      if (book) {
-        books = await Book.find({
-          where: { name: { contains: book } },
-          limit: limit,
-          skip: skipIndex,
-        }).populateAll();
-      } else if (author) {
-        const existedAuthor = await Author.findOne({
-          name: { contains: author },
+
+      // Define array of id
+      let authorId = [];
+      let categoryId = [];
+
+      // Collect the ids of authors which contains query name
+      if (author) {
+        const authors = await Author.find({
+          where: { name: { contains: author } },
         });
-        books = await Book.find({
-          where: { author: existedAuthor.id },
-          limit: limit,
-          skip: skipIndex,
-        }).populateAll();
-      } else if (category) {
-        const existedCategory = await Category.findOne({
-          name: { contains: category },
+        authorId = authors.map((author) => {
+          return author.id;
         });
-        books = await Book.find({
-          where: { category: existedCategory.id },
-          limit: limit,
-          skip: skipIndex,
-        }).populateAll();
-      } else {
-        books = await Book.find({
-          limit: limit,
-          skip: skipIndex,
-        }).populateAll();
       }
 
-      return res.ok(books);
-    } catch (error) {
-      sails.log.error(error);
-      return res.serverError(error);
-    }
-  },
-  /**
-   * @method get
-   * @description This method get all the books
-   * @param {Request} req HTTP Request
-   * @param {Response} res HTTP Response
-   */
-  getU: async (req, res) => {
-    try {
-      // get list of query params
-      const page = parseInt(req.query.page) || 1;
-      const limit = parseInt(req.query.limit) || 20;
-      const skipIndex = (page - 1) * limit;
-
-      // get the filter data from query
-      const { book, author, category } = req.query;
-      let books;
-      if (book) {
-        books = await Book.find({
-          where: { name: { contains: book }, isAvailable: true },
-          limit: limit,
-          skip: skipIndex,
-        }).populateAll();
-      } else if (author) {
-        const existedAuthor = await Author.findOne({
-          name: { contains: author },
+      // Collect the ids of categories which contains query name
+      if (category) {
+        const categories = await Category.find({
+          where: { name: { contains: category } },
         });
-        books = await Book.find({
-          where: { isAvailable: true, author: existedAuthor.id },
-          limit: limit,
-          skip: skipIndex,
-        }).populateAll();
-      } else if (category) {
-        const existedCategory = await Category.findOne({
-          name: { contains: category },
+        categoryId = categories.map((category) => {
+          return category.id;
         });
-        books = await Book.find({
-          where: { isAvailable: true, category: existedCategory.id },
-          limit: limit,
-          skip: skipIndex,
-        }).populateAll();
-      } else {
-        books = await Book.find({
-          where: { isAvailable: true },
-          limit: limit,
-          skip: skipIndex,
-        }).populateAll();
       }
+
+      // Make a search query
+      let searchQuery = {
+        or: [
+          author ? { author: { in: authorId } } : {},
+          category ? { category: { in: categoryId } } : {},
+        ],
+      };
+
+      // Query to search a book by name
+      if (book) {
+        searchQuery.or.push({ name: { contains: book } });
+      }
+
+      // For user get only available books
+      const existedUser = await User.findOne({ id: req.decodedToken.id });
+      if (existedUser) {
+        searchQuery.isAvailable = true;
+      }
+
+      const books = await Book.find({
+        where: searchQuery,
+        limit: limit,
+        skip: skipIndex,
+      }).populateAll();
 
       return res.ok(books);
     } catch (error) {

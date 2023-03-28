@@ -134,7 +134,7 @@ describe("BookController", () => {
         done();
       });
   });
-  //getU
+  //get
   it("get all the books", (done) => {
     supertest(sails.hooks.http.app)
       .get("/book/user")

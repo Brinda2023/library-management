@@ -81,7 +81,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"name\":\"Classic\"\n}",
+							"raw": "{\n    \"name\":\"Class\"\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -221,7 +221,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"name\":\"author6\"\n}",
+							"raw": "{\n    \"name\":\"author2\"\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -256,12 +256,26 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "{{base_url}}/author",
+							"raw": "{{base_url}}/author?page=1&limit=2&name=author1",
 							"host": [
 								"{{base_url}}"
 							],
 							"path": [
 								"author"
+							],
+							"query": [
+								{
+									"key": "page",
+									"value": "1"
+								},
+								{
+									"key": "limit",
+									"value": "2"
+								},
+								{
+									"key": "name",
+									"value": "author1"
+								}
 							]
 						}
 					},
@@ -351,13 +365,18 @@
 							"mode": "formdata",
 							"formdata": [
 								{
+									"key": "thumb",
+									"type": "file",
+									"src": "/Users/ztlab140/Desktop/Screenshot 2023-03-23 at 5.51.48 PM.png"
+								},
+								{
 									"key": "name",
-									"value": "book1",
+									"value": "book2",
 									"type": "text"
 								},
 								{
 									"key": "author",
-									"value": "author1",
+									"value": "author2",
 									"type": "text"
 								},
 								{
@@ -367,18 +386,13 @@
 								},
 								{
 									"key": "category",
-									"value": "Classic",
+									"value": "Class",
 									"type": "text"
 								},
 								{
 									"key": "publishYear",
 									"value": "2001",
 									"type": "text"
-								},
-								{
-									"key": "thumb",
-									"type": "file",
-									"src": "/Users/ztlab140/Documents/sails/library-management/images/book1img.jpg"
 								}
 							]
 						},
@@ -410,12 +424,37 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "{{base_url}}/book",
+							"raw": "{{base_url}}/book?author=autho&category=classic",
 							"host": [
 								"{{base_url}}"
 							],
 							"path": [
 								"book"
+							],
+							"query": [
+								{
+									"key": "page",
+									"value": "1",
+									"disabled": true
+								},
+								{
+									"key": "limit",
+									"value": "2",
+									"disabled": true
+								},
+								{
+									"key": "book",
+									"value": "book1",
+									"disabled": true
+								},
+								{
+									"key": "author",
+									"value": "autho"
+								},
+								{
+									"key": "category",
+									"value": "classic"
+								}
 							]
 						}
 					},
@@ -446,13 +485,13 @@
 							}
 						},
 						"url": {
-							"raw": "{{base_url}}/book/9d030420-bedd-48e6-b25f-8777d144774d",
+							"raw": "{{base_url}}/book/074ad737-4be1-43fc-9d52-f4468912ec2d",
 							"host": [
 								"{{base_url}}"
 							],
 							"path": [
 								"book",
-								"9d030420-bedd-48e6-b25f-8777d144774d"
+								"074ad737-4be1-43fc-9d52-f4468912ec2d"
 							]
 						}
 					},
@@ -474,13 +513,13 @@
 						"method": "DELETE",
 						"header": [],
 						"url": {
-							"raw": "{{base_url}}/book/9d030420-bedd-48e6-b25f-8777d144774d",
+							"raw": "{{base_url}}/book/074ad737-4be1-43fc-9d52-f4468912ec2d",
 							"host": [
 								"{{base_url}}"
 							],
 							"path": [
 								"book",
-								"9d030420-bedd-48e6-b25f-8777d144774d"
+								"074ad737-4be1-43fc-9d52-f4468912ec2d"
 							]
 						}
 					},
@@ -503,7 +542,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"book\":\"book1\",\n    \"issuedTo\":\"user1\"\n}",
+							"raw": "{\n    \"book\":\"book1\",\n    \"issuedTo\":\"user1un\"\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -538,19 +577,13 @@
 						"method": "PATCH",
 						"header": [],
 						"url": {
-							"raw": "{{base_url}}/history/:id",
+							"raw": "{{base_url}}/history/910738c9-75fc-4309-aec6-5545ff8c58f0",
 							"host": [
 								"{{base_url}}"
 							],
 							"path": [
 								"history",
-								":id"
-							],
-							"variable": [
-								{
-									"key": "id",
-									"value": null
-								}
+								"910738c9-75fc-4309-aec6-5545ff8c58f0"
 							]
 						}
 					},
@@ -572,19 +605,13 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "{{base_url}}/history/:id",
+							"raw": "{{base_url}}/history/910738c9-75fc-4309-aec6-5545ff8c58f0",
 							"host": [
 								"{{base_url}}"
 							],
 							"path": [
 								"history",
-								":id"
-							],
-							"variable": [
-								{
-									"key": "id",
-									"value": null
-								}
+								"910738c9-75fc-4309-aec6-5545ff8c58f0"
 							]
 						}
 					},
@@ -693,13 +720,38 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "{{base_url}}/book/user",
+							"raw": "{{base_url}}/book/user?page=1&limit=2&book=&author=&category=",
 							"host": [
 								"{{base_url}}"
 							],
 							"path": [
 								"book",
 								"user"
+							],
+							"query": [
+								{
+									"key": "page",
+									"value": "1"
+								},
+								{
+									"key": "limit",
+									"value": "2"
+								},
+								{
+									"key": "book",
+									"value": "",
+									"description": "search by book name"
+								},
+								{
+									"key": "author",
+									"value": "",
+									"description": "search by author name"
+								},
+								{
+									"key": "category",
+									"value": "",
+									"description": "filter by category"
+								}
 							]
 						}
 					},
@@ -736,12 +788,12 @@
 		},
 		{
 			"key": "admin_jwt",
-			"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY3MzM3OGEyLWVmYTUtNGNjOS04YTM5LWE2ODZjMjMwZTNiMyIsImlhdCI6MTY3OTQ4NTQ1OCwiZXhwIjoxNjgyMDc3NDU4LCJpc3MiOiJodHRwczovL3d3dy56aWdudXRzLmNvbSJ9.Pi-5BWt3TKoqOYQa7UvIa844CQbXJnlh7dA8kiWRmDU",
+			"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjAwZTI2YmYxLTgxNjYtNDFmZS05Yzk5LTcyMGUwZjhhNzRjNSIsImlhdCI6MTY4MDAwMDU2NywiZXhwIjoxNjgyNTkyNTY3LCJpc3MiOiJodHRwczovL3d3dy56aWdudXRzLmNvbSJ9.w0MFVQMo0zMg7gZLpDYdbGKuL6GZ3wiQ26KBNQHEMis",
 			"type": "string"
 		},
 		{
 			"key": "user_jwt",
-			"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjJmMmNjMzk3LTc2ZTAtNGU0NC1iODk4LTYzZjMyM2Y1NmM5NyIsImlhdCI6MTY3OTQ4NjU2MywiZXhwIjoxNjgyMDc4NTYzLCJpc3MiOiJodHRwczovL3d3dy56aWdudXRzLmNvbSJ9.p3mIK4E2Hvi9duVRF-3XDK4e30UlvYP2OSWXoF-B3YU",
+			"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjVmYmY3MDY2LTAyYzQtNDA1Zi05OWQxLTk2ZGYwMGQyMjE2ZiIsImlhdCI6MTY4MDAwMDY3NiwiZXhwIjoxNjgyNTkyNjc2LCJpc3MiOiJodHRwczovL3d3dy56aWdudXRzLmNvbSJ9.jutEce3HoFS4Vjszwm46R7GnERW5QL9RE5a4m2j6hQk",
 			"type": "string"
 		}
 	]
